@@ -94,7 +94,6 @@ exports.login = async (req, res) => {
           company_name: user.company_name,
           city: user.city,
           street: user.street,
-          restaurant_id: user.restaurant_id,
           accessToken: `Bearer ${accessToken}`,
           refreshToken: `Bearer ${refreshToken}`
         },
@@ -136,7 +135,7 @@ exports.isLogged = async (req, res) => {
 
       res.json({
         status: "success",
-        data: pick(user, ["id", "email", "name", "last_name", "login", "company_name", "city", "street", "restaurant_id"]),
+        data: pick(user, ["id", "email", "name", "last_name", "login", "company_name", "city", "street"]),
       });
     } else {
       res.json({

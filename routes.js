@@ -32,4 +32,15 @@ router.post("/login/", UsersController.login);
 authGet("/isLogged/:token", UsersController.isLogged);
 authPost("/edit-user/", UsersController.save);
 
+const RestaurantsController = require("./controllers/restaurants");
+authGet("/restaurants/", RestaurantsController.showAll);
+authPost("/auth/restaurant/", RestaurantsController.save);
+authGet("/auth/restaurants/", RestaurantsController.showMyRestaurants);
+authPost("/auth/restaurant/:id/remove", RestaurantsController.remove);
+authGet("/auth/restaurants/:id", RestaurantsController.findOne);
+
+const TablesController = require("./controllers/tables");
+authGet("/tables/:id", TablesController.showAll);
+authPost("/auth/tables/", TablesController.save);
+
 module.exports = router;
