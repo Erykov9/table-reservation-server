@@ -42,5 +42,6 @@ authGet("/auth/restaurants/:id", RestaurantsController.findOne);
 const TablesController = require("./controllers/tables");
 authGet("/tables/:id", TablesController.showAll);
 authPost("/auth/tables/", TablesController.save);
+authPost("/auth/tables/:id/remove", TablesController.remove);
 
 module.exports = router;

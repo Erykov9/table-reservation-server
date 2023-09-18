@@ -49,3 +49,24 @@ exports.save = async (req, res) => {
     });
   }
 };
+
+exports.remove = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await removeById({
+      model: Tables,
+      id,
+    });
+
+    res.json({
+      status: "success",
+      message: "Stolik został prawidłowo usunięty",
+    });
+  } catch (error) {
+    res.json({
+      status: "error",
+      message: "Wystąpił błąd serwera. " + error,
+    });
+  }
+};
