@@ -33,15 +33,19 @@ authGet("/isLogged/:token", UsersController.isLogged);
 authPost("/edit-user/", UsersController.save);
 
 const RestaurantsController = require("./controllers/restaurants");
-authGet("/restaurants/", RestaurantsController.showAll);
+router.get("/restaurants/", RestaurantsController.showAll);
 authPost("/auth/restaurant/", RestaurantsController.save);
 authGet("/auth/restaurants/", RestaurantsController.showMyRestaurants);
 authPost("/auth/restaurant/:id/remove", RestaurantsController.remove);
 authGet("/auth/restaurants/:id", RestaurantsController.findOne);
+router.get("/restaurants/:id", RestaurantsController.findOne)
 
 const TablesController = require("./controllers/tables");
-authGet("/tables/:id", TablesController.showAll);
+router.get("/tables/:id", TablesController.showAll);
 authPost("/auth/tables/", TablesController.save);
 authPost("/auth/tables/:id/remove", TablesController.remove);
+
+const ReservationsController = require("./controllers/reservations");
+router.get("/reservations/", ReservationsController.showAll)
 
 module.exports = router;

@@ -71,7 +71,6 @@ exports.showMyRestaurants = async (req, res) => {
 exports.save = async (req, res) => {
   try {
     const { body } = req;
-    console.log(body);
 
     await save({
       model: Restaurants,
@@ -111,3 +110,24 @@ exports.remove = async (req, res) => {
     });
   }
 };
+
+exports.showRestaurants = async (req, res) => {
+  try {
+    const restaurants = await findAll({
+      model: Restaurants,
+    });
+
+    console.log(restaurants)
+
+    res.json({
+      status: "success",
+      message: "Udało się pobrać listę restauracji",
+      data: restaurants,
+    });
+  } catch (error) {
+    res.json({
+      status: "error",
+      message: "Wystąpił błąd serwera. " + error,
+    });
+  }
+}
