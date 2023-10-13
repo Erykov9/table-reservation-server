@@ -2,7 +2,7 @@ const { Reservations } = require("../models");
 const { findAll, save, removeById, findById } = require("../helpers");
 const moment = require("moment");
 
-exports.showAll = async (req, res) => {
+exports.showSpecified = async (req, res) => {
   try {
     const { date, restaurantId, tableId } = req.query;
     const reservations = await findAll({
@@ -33,24 +33,81 @@ exports.showAll = async (req, res) => {
   }
 };
 
+exports.showAll = async (req, res) => {
+  try {
+    res.json({
+      status: "success",
+      message: "Udało się pobrać listę rezerwacji."
+    })
+  } catch(error) {
+    res.json({
+      status: "error",
+      message: "Nie udało się pobrać rezerwacji"
+    })
+  }
+}
+
 exports.save = async (req, res) => {
   try {
     const { body } = req;
-
-    await save({
+    const reservations = await findAll({
       model: Reservations,
-      data: body,
+      query: {
+        restaurant_id: body.restaurant_id,
+        table_id: body.table_id,
+      },
+      allowedFilters: ["restaurant_id", "table_id"],
     });
 
-    res.json({
-      status: "success",
-      message: "Restauracja została dodana pomyślnie",
-      data: body,
+    const filtered = reservations.results.filter(
+      (reservation) =>
+        moment(reservation.reservation_start).isSame(
+          body.reservation_start.split(" ")[0],
+          "day"
+        ) ||
+        moment(reservation.reservation_end).isSame(
+          body.reservation_start.split(" ")[0],
+          "day"
+        )
+    );
+
+    const isOverlapping = filtered.some((existingReservation) => {
+      const existingStart = existingReservation.reservation_start;
+      const existingEnd = existingReservation.reservation_end;
+      const newStart = body.reservation_start;
+      const newEnd = body.reservation_end;
+
+      return (
+        (moment(newStart).isSameOrAfter(existingStart) &&
+          moment(newStart).isSameOrBefore(existingEnd)) ||
+        (moment(newEnd).isSameOrAfter(existingStart) &&
+          moment(newEnd).isSameOrBefore(existingEnd))
+      );
     });
+
+    if (isOverlapping) {
+      res.json({
+        status: "error",
+        message: "Nie można zarezerwować stolika na podane godziny"
+      })
+    } else {
+      res.json({
+        status: "success",
+        message: "Rezerwacja została dodana pomyślnie",
+        data: body,
+      });
+
+      await save({
+        model: Reservations,
+        data: body,
+      });
+    }
+
   } catch (error) {
     res.json({
       status: "error",
       message: "Wystąpił błąd serwera. " + error,
     });
+    console.log(error);
   }
 };

@@ -46,6 +46,7 @@ authPost("/auth/tables/", TablesController.save);
 authPost("/auth/tables/:id/remove", TablesController.remove);
 
 const ReservationsController = require("./controllers/reservations");
-router.get("/reservations/", ReservationsController.showAll)
+router.get("/reservations/", ReservationsController.showSpecified);
+router.post("/reservations/", ReservationsController.save)
 
 module.exports = router;
