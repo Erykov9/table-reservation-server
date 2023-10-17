@@ -1,6 +1,8 @@
 const { Reservations } = require("../models");
 const { findAll, save, removeById, findById } = require("../helpers");
 const moment = require("moment");
+const SqlGo2 = require("../utils/SqlGo2");
+const { DATE_HOUR_FORMAT, DATE_FORMAT } = require("../constants");
 
 exports.showSpecified = async (req, res) => {
   try {
@@ -35,9 +37,21 @@ exports.showSpecified = async (req, res) => {
 
 exports.showAll = async (req, res) => {
   try {
+    const { query } = req;
+    const reservationsPayload = await SqlGo2({
+      modelName: "reservations",
+      data: {
+        restaurant_id: query.restaurant_id,
+      },
+      res
+    }).filter({
+      equals: ["restaurant_id"]
+    }).select();
+
     res.json({
       status: "success",
-      message: "Udało się pobrać listę rezerwacji."
+      message: "Udało się pobrać listę rezerwacji.",
+      data: reservationsPayload
     })
   } catch(error) {
     res.json({
@@ -108,6 +122,5 @@ exports.save = async (req, res) => {
       status: "error",
       message: "Wystąpił błąd serwera. " + error,
     });
-    console.log(error);
   }
 };
