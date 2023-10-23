@@ -6,6 +6,9 @@
   "scripts": {
     "start": "nodemon app.js"
   },
+  "engines": {
+    "node": "16.17.0"
+  },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
@@ -21,5 +24,16 @@
     "mysql2": "^3.6.0",
     "nodemon": "^3.0.1",
     "uuid": "^9.0.1"
-  }
+  },
+  "description": "---\r ### The website is intended for the gastronomy industry to provide access to available tables for reservations. The goal of the website is to make it easier for customers to find restaurants with available tables and to quickly make reservations online without having to call the restaurant. Additionally, the waitstaff will have slightly fewer responsibilities. As a current hospitality industry employee, I know what is needed for the entire staff and customers to be satisfied.",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Erykov9/table-reservation-server.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/Erykov9/table-reservation-server/issues"
+  },
+  "homepage": "https://github.com/Erykov9/table-reservation-server#readme"
 }
