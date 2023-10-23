@@ -44,6 +44,7 @@ const TablesController = require("./controllers/tables");
 router.get("/tables/:id", TablesController.showAll);
 authPost("/auth/tables/", TablesController.save);
 authPost("/auth/tables/:id/remove", TablesController.remove);
+authGet("/auth/tables/:id", TablesController.getTable);
 
 const ReservationsController = require("./controllers/reservations");
 router.get("/reservations/", ReservationsController.showSpecified);

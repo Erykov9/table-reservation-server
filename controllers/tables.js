@@ -1,9 +1,12 @@
 const { Tables } = require("../models");
 const { findAll, save, removeById, findById } = require("../helpers");
+const SqlGo2 = require("../utils/SqlGo2");
 
 exports.showAll = async (req, res) => {
   try {
     const { id } = req.params;
+    const query = req.query;
+    console.log(query)
 
     const tables = await findAll({
       model: Tables,
@@ -25,6 +28,31 @@ exports.showAll = async (req, res) => {
     });
   }
 };
+
+exports.getTable = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const [table] = await SqlGo2({
+      modelName: "tables",
+      data: { id },
+      res
+    }).filter({
+      equals: ["id"]
+    }).select();
+
+    res.json({
+      status: "success",
+      message: "Udało się pobrać dane",
+      data: table.table_number
+    });
+  } catch(error) {
+    res.json({
+      status: "error",
+      message: "Nie udało się pobrać danych"
+    });
+  }
+}
 
 exports.save = async (req, res) => {
   try {
